@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
 import { randomUUID } from 'crypto'
+
+// Declarar el tipo global para TypeScript
+declare global {
+  var tempFiles: Map<string, {
+    buffer: Buffer
+    mimeType: string
+    name: string
+    uploadedAt: Date
+  }> | undefined
+}
 
 // Configuración de archivos permitidos
 const ALLOWED_TYPES = {
@@ -12,8 +20,10 @@ const ALLOWED_TYPES = {
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export async function POST(request: NextRequest) {
+  let formData: FormData | null = null
+  
   try {
-    const formData = await request.formData()
+    formData = await request.formData()
     const file: File | null = formData.get('file') as unknown as File
     const sessionId = formData.get('sessionId') as string
 
@@ -51,30 +61,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generar nombre único
+    // En producción (Vercel), usar almacenamiento temporal
     const fileId = randomUUID()
     const extension = file.name.split('.').pop() || ''
     const fileName = `${fileId}.${extension}`
     
-    // Crear directorio de uploads si no existe
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
-    const filePath = join(uploadDir, fileName)
-
-    // Convertir archivo a buffer y guardarlo
+    // Convertir archivo a buffer
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-
-    try {
-      await writeFile(filePath, buffer)
-    } catch (error) {
-      // Si falla, crear directorio y intentar de nuevo
-      const { mkdir } = await import('fs/promises')
-      await mkdir(uploadDir, { recursive: true })
-      await writeFile(filePath, buffer)
+    
+    // En lugar de guardar en disco, guardar en memoria temporalmente
+    // y crear un endpoint para servirlo
+    const fileData = {
+      buffer,
+      mimeType: fileType,
+      name: file.name,
+      uploadedAt: new Date()
     }
+    
+    // Almacenar en memoria temporal (esto se puede mejorar con Redis/DB)
+    globalThis.tempFiles = globalThis.tempFiles || new Map()
+    globalThis.tempFiles.set(fileId, fileData)
+    
+    // Limpiar archivos antiguos (más de 1 hora)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+    Array.from(globalThis.tempFiles.entries()).forEach(([id, data]) => {
+      if (data.uploadedAt < oneHourAgo) {
+        globalThis.tempFiles?.delete(id)
+      }
+    })
 
     // Construir URL del archivo
-    const fileUrl = `/uploads/${fileName}`
+    const fileUrl = `/api/files/${fileId}`
     
     // Determinar tipo
     const type = isImage ? 'image' : 'audio'
@@ -98,12 +116,18 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('[FILE-UPLOAD] Error:', error)
+    console.error('[FILE-UPLOAD] Error completo:', {
+      error: error instanceof Error ? error.message : 'Error desconocido',
+      stack: error instanceof Error ? error.stack : undefined,
+      sessionId: formData?.get('sessionId'),
+      fileName: (formData?.get('file') as File)?.name
+    })
     
     return NextResponse.json(
       { 
-        error: 'Error interno del servidor',
-        details: error instanceof Error ? error.message : 'Error desconocido'
+        error: 'Error procesando archivo',
+        details: error instanceof Error ? error.message : 'Error desconocido',
+        timestamp: new Date().toISOString()
       },
       { status: 500 }
     )

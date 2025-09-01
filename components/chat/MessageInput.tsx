@@ -15,7 +15,10 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
   const [inputValue, setInputValue] = useState('')
   const [attachedFiles, setAttachedFiles] = useState<FileAttachment[]>([])
   const [isUploading, setIsUploading] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
 
   const handleSubmit = () => {
     if ((inputValue.trim() || attachedFiles.length > 0) && !disabled && !isUploading) {
@@ -64,6 +67,74 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
 
   const removeFile = (fileId: string) => {
     setAttachedFiles(prev => prev.filter(f => f.id !== fileId))
+  }
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
+      }
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' })
+        await uploadAudioBlob(audioBlob)
+        
+        // Detener el stream
+        stream.getTracks().forEach(track => track.stop())
+      }
+
+      mediaRecorder.start()
+      setIsRecording(true)
+    } catch (error) {
+      console.error('Error iniciando grabación:', error)
+      alert('Error accediendo al micrófono. Verifica los permisos.')
+    }
+  }
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+    }
+  }
+
+  const uploadAudioBlob = async (audioBlob: Blob) => {
+    setIsUploading(true)
+    
+    try {
+      const fileName = `grabacion_${new Date().getTime()}.wav`
+      const file = new File([audioBlob], fileName, { type: 'audio/wav' })
+      
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('sessionId', sessionId)
+
+      const response = await fetch('/api/files/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setAttachedFiles(prev => [...prev, result.file])
+      } else {
+        console.error('Error subiendo audio:', result.error)
+        alert(`Error subiendo audio: ${result.error}`)
+      }
+    } catch (error) {
+      console.error('Error en upload de audio:', error)
+      alert('Error subiendo audio grabado')
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -117,8 +188,9 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
           </p>
         </div>
 
-        {/* Botón de archivos */}
+        {/* Botones de acciones */}
         <div className="flex space-x-2 mb-6">
+          {/* Input de archivos oculto */}
           <input
             type="file"
             ref={fileInputRef}
@@ -127,19 +199,34 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             multiple
             className="hidden"
           />
+          
+          {/* Botón de archivos */}
           <Button
             onClick={() => fileInputRef.current?.click()}
+            disabled={disabled || isUploading || isRecording}
+            variant="ghost"
+            size="sm"
+            title="Adjuntar archivo"
+          >
+            {isUploading ? '📤' : '📎'}
+          </Button>
+
+          {/* Botón de micrófono */}
+          <Button
+            onClick={isRecording ? stopRecording : startRecording}
             disabled={disabled || isUploading}
             variant="ghost"
             size="sm"
+            className={isRecording ? 'bg-red-100 text-red-600' : ''}
+            title={isRecording ? 'Detener grabación' : 'Grabar audio'}
           >
-            {isUploading ? '📤' : '📎'}
+            {isRecording ? '🛑' : '🎙️'}
           </Button>
 
           {/* Botón de envío */}
           <Button
             onClick={handleSubmit}
-            disabled={(!inputValue.trim() && attachedFiles.length === 0) || disabled || isUploading}
+            disabled={(!inputValue.trim() && attachedFiles.length === 0) || disabled || isUploading || isRecording}
           >
             <SendIcon size={16} />
           </Button>

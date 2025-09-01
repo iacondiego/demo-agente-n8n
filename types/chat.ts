@@ -4,6 +4,16 @@ export interface Message {
   sender: 'user' | 'bot'
   timestamp: Date
   isTyping?: boolean
+  files?: FileAttachment[]
+}
+
+export interface FileAttachment {
+  id: string
+  name: string
+  type: 'image' | 'audio'
+  size: number
+  url: string
+  mimeType: string
 }
 
 export interface ChatState {
@@ -33,6 +43,7 @@ export interface WebhookRequest {
   userId?: string
   sessionId?: string
   timestamp: string
+  files?: FileAttachment[]
 }
 
 export interface WebhookResponse {

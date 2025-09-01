@@ -41,9 +41,48 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
               <div className="typing-dots text-sm"></div>
             </div>
           ) : (
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
-              {message.content}
-            </p>
+            <div>
+              {message.content && (
+                <p className="text-sm leading-relaxed whitespace-pre-wrap mb-2">
+                  {message.content}
+                </p>
+              )}
+              
+              {/* Mostrar archivos adjuntos */}
+              {message.files && message.files.length > 0 && (
+                <div className="space-y-2">
+                  {message.files.map((file) => (
+                    <div key={file.id} className="border rounded-lg overflow-hidden">
+                      {file.type === 'image' ? (
+                        <div>
+                          <img 
+                            src={file.url} 
+                            alt={file.name}
+                            className="max-w-full h-auto max-h-48 object-cover"
+                          />
+                          <div className="p-2 bg-gray-50 text-xs text-gray-600">
+                            📷 {file.name}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-gray-50">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-lg">🎵</span>
+                            <div>
+                              <div className="text-sm font-medium text-gray-800">{file.name}</div>
+                              <audio controls className="mt-1 w-full max-w-64">
+                                <source src={file.url} type={file.mimeType} />
+                                Tu navegador no soporta audio.
+                              </audio>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 

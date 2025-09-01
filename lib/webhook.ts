@@ -1,4 +1,4 @@
-import { WebhookRequest, WebhookResponse, ApiError } from '@/types/chat'
+import { WebhookRequest, WebhookResponse, ApiError, FileAttachment } from '@/types/chat'
 import { WEBHOOK_CONFIG } from './constants'
 import { isValidWebhookResponse, getErrorMessage } from './utils'
 import { responsePoller } from './responsePoller'
@@ -14,12 +14,13 @@ class WebhookService {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   }
 
-  async sendMessage(message: string, userId?: string): Promise<WebhookResponse> {
+  async sendMessage(message: string, files?: FileAttachment[], userId?: string): Promise<WebhookResponse> {
     const requestData: WebhookRequest = {
       message: message.trim(),
       userId: userId || 'anonymous',
       sessionId: this.sessionId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      files: files
     }
 
     let lastError: Error | null = null

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Message, ApiError } from '@/types/chat'
+import { Message, ApiError, FileAttachment } from '@/types/chat'
 import { generateMessageId, delay } from '@/lib/utils'
 import { BOT_RESPONSES, TYPING_DELAY, WELCOME_MESSAGES } from '@/lib/constants'
 import { webhookService } from '@/lib/webhook'
@@ -58,13 +58,14 @@ export default function ChatLayout() {
     return BOT_RESPONSES.default[Math.floor(Math.random() * BOT_RESPONSES.default.length)]
   }
 
-  const handleSendMessage = useCallback(async (content: string) => {
+  const handleSendMessage = useCallback(async (content: string, files?: FileAttachment[]) => {
     // Agregar mensaje del usuario
     const userMessage: Message = {
       id: generateMessageId(),
       content,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      files: files
     }
     
     addMessage(userMessage)
@@ -107,7 +108,7 @@ export default function ChatLayout() {
       // Intentar enviar al webhook de n8n y esperar respuesta via polling
       console.log(`[CHAT] Enviando mensaje a n8n para session: ${webhookService.getSessionId()}`)
       
-      const webhookResponse = await webhookService.sendMessage(content)
+      const webhookResponse = await webhookService.sendMessage(content, files)
       
       if (webhookResponse.success && webhookResponse.response) {
         const botMessage: Message = {
@@ -183,7 +184,8 @@ export default function ChatLayout() {
       <ChatArea messages={messages} />
       <MessageInput 
         onSendMessage={handleSendMessage} 
-        disabled={botStatus === 'typing'} 
+        disabled={botStatus === 'typing'}
+        sessionId={webhookService.getSessionId()}
       />
       
       {/* Indicador discreto de estado del webhook */}

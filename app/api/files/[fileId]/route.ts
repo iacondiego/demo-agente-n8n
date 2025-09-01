@@ -46,7 +46,7 @@ export async function GET(
     }
 
     // Servir el archivo
-    return new NextResponse(fileData.buffer, {
+    return new NextResponse(fileData.buffer as unknown as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': fileData.mimeType,

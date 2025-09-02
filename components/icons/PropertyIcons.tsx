@@ -8,7 +8,10 @@ import {
   User, 
   Bot,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  Mic,
+  MessageSquare,
+  Zap
 } from 'lucide-react'
 
 interface IconProps {
@@ -54,4 +57,16 @@ export const ClockIcon = ({ className, size = 20 }: IconProps) => (
 
 export const CheckIcon = ({ className, size = 20 }: IconProps) => (
   <CheckCircle2 className={className} size={size} />
+)
+
+export const TextAgentIcon = ({ className, size = 20 }: IconProps) => (
+  <MessageSquare className={className} size={size} />
+)
+
+export const VoiceAgentIcon = ({ className, size = 20 }: IconProps) => (
+  <Mic className={className} size={size} />
+)
+
+export const AIIcon = ({ className, size = 20 }: IconProps) => (
+  <Zap className={className} size={size} />
 ) 

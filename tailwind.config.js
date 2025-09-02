@@ -18,11 +18,13 @@ module.exports = {
           900: '#1e3a8a',
         },
         immobrand: {
-          navy: '#1a365d',      // Azul oscuro principal
-          gold: '#d4af37',      // Dorado elegante
-          lightgold: '#f7e98e', // Dorado claro
-          darkblue: '#2c5282',  // Azul intermedio
-          cream: '#fefcf0',     // Crema suave
+          navy: '#0f172a',      // Azul oscuro muy profundo (slate-900)
+          blue: '#1e40af',      // Azul principal brillante
+          lightblue: '#3b82f6', // Azul más claro para acentos
+          accent: '#60a5fa',    // Azul claro para elementos interactivos
+          dark: '#1e293b',      // Fondo oscuro (slate-800)
+          darker: '#0f172a',    // Fondo más oscuro (slate-900)
+          cream: '#f8fafc',     // Blanco suave para texto
         }
       },
       fontFamily: {

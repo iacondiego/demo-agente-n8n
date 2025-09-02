@@ -11,9 +11,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus-ring disabled:opacity-50 disabled:cursor-not-allowed'
     
     const variants = {
-      primary: 'bg-immobrand-navy hover:bg-immobrand-darkblue text-white shadow-sm hover:shadow-md',
-      secondary: 'bg-immobrand-gold hover:bg-yellow-600 text-immobrand-navy',
-      ghost: 'hover:bg-immobrand-navy/10 text-immobrand-navy'
+      primary: 'btn-primary',
+      secondary: 'btn-secondary', 
+      ghost: 'hover:bg-immobrand-blue/20 text-immobrand-accent hover:glow-blue transition-all duration-300'
     }
     
     const sizes = {

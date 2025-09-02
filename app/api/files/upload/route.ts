@@ -66,20 +66,22 @@ export async function POST(request: NextRequest) {
     const extension = file.name.split('.').pop() || ''
     const fileName = `${fileId}.${extension}`
     
-    // Convertir archivo a buffer
+    // Convertir archivo a buffer y base64
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
+    const base64Data = buffer.toString('base64')
     
-    // En lugar de guardar en disco, guardar en memoria temporalmente
-    // y crear un endpoint para servirlo
+    // Para Vercel, incluir los datos directamente en la respuesta
+    // en lugar de almacenar en memoria que se pierde
     const fileData = {
       buffer,
       mimeType: fileType,
       name: file.name,
-      uploadedAt: new Date()
+      uploadedAt: new Date(),
+      base64: base64Data
     }
     
-    // Almacenar en memoria temporal (esto se puede mejorar con Redis/DB)
+    // Almacenar temporalmente para la URL (puede fallar)
     globalThis.tempFiles = globalThis.tempFiles || new Map()
     globalThis.tempFiles.set(fileId, fileData)
     
@@ -91,7 +93,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // Construir URL del archivo
+    // Construir URL del archivo (puede no funcionar en Vercel)
     const fileUrl = `/api/files/${fileId}`
     
     // Determinar tipo
@@ -104,7 +106,9 @@ export async function POST(request: NextRequest) {
       size: file.size,
       url: fileUrl,
       mimeType: fileType,
-      sessionId
+      sessionId,
+      // Incluir base64 para n8n como fallback
+      base64: `data:${fileType};base64,${base64Data}`
     }
 
     console.log(`[FILE-UPLOAD] Archivo subido: ${file.name} (${type}) para session: ${sessionId}`)

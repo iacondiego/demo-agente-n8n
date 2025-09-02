@@ -33,7 +33,8 @@ Cuando un usuario envía archivos, el webhook recibe:
       "type": "image",
       "size": 2048576,
       "url": "/uploads/550e8400-e29b-41d4-a716-446655440000.jpg",
-      "mimeType": "image/jpeg"
+      "mimeType": "image/jpeg",
+      "base64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD..."
     }
   ]
 }
@@ -51,10 +52,15 @@ En tu flujo de n8n, después del webhook, agrega un nodo **IF** para verificar a
 
 Para cada archivo, usar nodo **HTTP Request**:
 
-**Configuración**:
+**Opción 1 - Descarga via URL** (puede fallar en Vercel):
 - **Method**: `GET`
 - **URL**: `https://tu-app.vercel.app{{ $json.files[0].url }}`
 - **Response Format**: `File`
+
+**Opción 2 - Usar base64 directamente** (recomendado):
+- No necesitas HTTP Request
+- Usar directamente: `{{ $json.files[0].base64 }}`
+- Los datos ya están en formato base64 listo para usar
 
 **Ejemplo con múltiples archivos**:
 ```javascript
@@ -144,10 +150,11 @@ GET https://tu-app.vercel.app/api/files/upload
 
 ## 🚨 Consideraciones Importantes
 
-1. **Procesamiento inmediato**: Los archivos se almacenan temporalmente
-2. **URL completa**: Usar siempre la URL completa de Vercel para descargas
-3. **Manejo de errores**: Verificar que el archivo existe antes de procesar
+1. **Usar base64**: En Vercel es más confiable usar el campo `base64` directamente
+2. **URLs pueden fallar**: Las URLs `/api/files/` pueden no funcionar por limitaciones de Vercel
+3. **Fallback recomendado**: Siempre usar `base64` como primera opción
 4. **Múltiples archivos**: El array `files` puede contener varios elementos
+5. **Tamaño**: Base64 aumenta el tamaño ~33%, considera el límite de payload
 
 ---
 

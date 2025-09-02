@@ -14,6 +14,7 @@ export interface FileAttachment {
   size: number
   url: string
   mimeType: string
+  base64?: string // Data URL con base64 para fallback
 }
 
 export interface ChatState {

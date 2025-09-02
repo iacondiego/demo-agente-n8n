@@ -145,19 +145,19 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 px-6 py-4">
+    <div className="glass-effect border-t border-immobrand-navy px-6 py-4 backdrop-blur-xl">
       {/* Archivos adjuntos */}
       {attachedFiles.length > 0 && (
         <div className="mb-3 flex flex-wrap gap-2">
           {attachedFiles.map((file) => (
-            <div key={file.id} className="flex items-center bg-gray-100 rounded-lg px-3 py-2 text-sm">
+            <div key={file.id} className="flex items-center glass-effect rounded-lg px-3 py-2 text-sm message-glow">
               <span className="mr-2">
                 {file.type === 'image' ? '🖼️' : '🎵'}
               </span>
-              <span className="text-gray-700 truncate max-w-32">{file.name}</span>
+              <span className="text-immobrand-cream truncate max-w-32">{file.name}</span>
               <button
                 onClick={() => removeFile(file.id)}
-                className="ml-2 text-red-500 hover:text-red-700"
+                className="ml-2 text-red-400 hover:text-red-300 transition-colors duration-200"
               >
                 ×
               </button>
@@ -174,7 +174,7 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Escribe un mensaje o adjunta una imagen/audio..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus-ring text-immobrand-navy placeholder-gray-500"
+            className="w-full px-4 py-3 border border-immobrand-navy rounded-lg resize-none focus-ring bg-immobrand-darker text-immobrand-cream placeholder-gray-400 input-glow"
             rows={1}
             style={{
               minHeight: '44px',
@@ -183,7 +183,7 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             }}
             disabled={disabled || isUploading}
           />
-          <p className="text-xs text-gray-500 mt-1 px-1">
+          <p className="text-xs text-gray-400 mt-1 px-1">
             Presiona Enter para enviar, Shift+Enter para nueva línea
           </p>
         </div>
@@ -217,7 +217,7 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             disabled={disabled || isUploading}
             variant="ghost"
             size="sm"
-            className={isRecording ? 'bg-red-100 text-red-600' : ''}
+            className={isRecording ? 'bg-red-900/30 text-red-400 glow-blue' : 'hover:glow-blue'}
             title={isRecording ? 'Detener grabación' : 'Grabar audio'}
           >
             {isRecording ? '🛑' : '🎙️'}

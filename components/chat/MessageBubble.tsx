@@ -13,13 +13,13 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.sender === 'user'
 
   return (
-    <div className={`flex items-start space-x-3 animate-slide-up ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
+    <div className={`flex items-start space-x-3 slide-up-glow ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
       {/* Avatar */}
-      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-        isBot ? 'bg-immobrand-gold' : 'bg-immobrand-navy'
+      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center avatar-glow ${
+        isBot ? 'bg-immobrand-accent gradient-animated' : 'bg-immobrand-blue glow-blue-strong'
       }`}>
         {isBot ? (
-          <BotIcon className="text-immobrand-navy" size={16} />
+          <BotIcon className="text-white" size={16} />
         ) : (
           <UserIcon className="text-white" size={16} />
         )}
@@ -28,10 +28,10 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       {/* Contenido del mensaje */}
       <div className={`flex flex-col max-w-xs lg:max-w-md ${isUser ? 'items-end' : 'items-start'}`}>
         {/* Burbuja de mensaje */}
-        <div className={`px-4 py-3 rounded-lg ${
+        <div className={`px-4 py-3 rounded-lg message-glow ${
           isBot 
-            ? 'bg-white border border-gray-200 text-immobrand-navy' 
-            : 'bg-immobrand-navy text-white'
+            ? 'glass-effect text-immobrand-cream backdrop-blur-xl' 
+            : 'bg-immobrand-blue text-white glow-blue-strong'
         } ${
           isBot ? 'rounded-tl-none' : 'rounded-tr-none'
         }`}>
@@ -56,7 +56,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                       {file.type === 'image' ? (
                         <div>
                           <img 
-                            src={file.url} 
+                            src={file.base64 || file.url} 
                             alt={file.name}
                             className="max-w-full h-auto max-h-48 object-cover"
                           />
@@ -71,7 +71,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                             <div>
                               <div className="text-sm font-medium text-gray-800">{file.name}</div>
                               <audio controls className="mt-1 w-full max-w-64">
-                                <source src={file.url} type={file.mimeType} />
+                                <source src={file.base64 || file.url} type={file.mimeType} />
                                 Tu navegador no soporta audio.
                               </audio>
                             </div>

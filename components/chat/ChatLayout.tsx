@@ -19,9 +19,7 @@ export default function ChatLayout() {
     const checkWebhookHealth = async () => {
       const isHealthy = await webhookService.healthCheck()
       setIsWebhookHealthy(isHealthy)
-      if (!isHealthy) {
-        setBotStatus('away')
-      }
+      // No cambiar el botStatus a 'away' al inicio para evitar mostrar "Modo sin conexión"
     }
     
     checkWebhookHealth()
@@ -85,25 +83,7 @@ export default function ChatLayout() {
     addMessage(typingMessage)
 
     try {
-      // Mostrar mensaje de conexión aleatoriamente
-      if (Math.random() > 0.7) {
-        const connectingMsg = BOT_RESPONSES.connecting[Math.floor(Math.random() * BOT_RESPONSES.connecting.length)]
-        const connectingMessage: Message = {
-          id: generateMessageId(),
-          content: connectingMsg,
-          sender: 'bot',
-          timestamp: new Date()
-        }
-        
-        removeTypingMessage()
-        addMessage(connectingMessage)
-        
-        // Breve pausa para mostrar mensaje de conexión
-        await delay(1500)
-        
-        // Volver a mostrar typing
-        addMessage(typingMessage)
-      }
+      // Solo mostrar "Escribiendo..." - sin mensajes de conexión
 
       // Intentar enviar al webhook de n8n y esperar respuesta via polling
       console.log(`[CHAT] Enviando mensaje a n8n para session: ${webhookService.getSessionId()}`)
@@ -179,7 +159,7 @@ export default function ChatLayout() {
   }, [])
 
   return (
-    <div className="h-screen flex flex-col bg-immobrand-cream">
+    <div className="h-full flex flex-col">
       <Header botStatus={botStatus} isWebhookConnected={isWebhookHealthy} />
       <ChatArea messages={messages} />
       <MessageInput 
@@ -187,13 +167,6 @@ export default function ChatLayout() {
         disabled={botStatus === 'typing'}
         sessionId={webhookService.getSessionId()}
       />
-      
-      {/* Indicador discreto de estado del webhook */}
-      {!isWebhookHealthy && (
-        <div className="fixed bottom-20 right-6 bg-yellow-100 border border-yellow-300 text-yellow-800 px-3 py-2 rounded-lg text-xs shadow-lg">
-          ⚠️ Modo sin conexión - Respuestas básicas activas
-        </div>
-      )}
     </div>
   )
 } 

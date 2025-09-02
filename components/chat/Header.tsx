@@ -28,34 +28,34 @@ export default function Header({ botStatus, isWebhookConnected = true }: HeaderP
 
   const getStatusColor = () => {
     if (botStatus === 'away' && !isWebhookConnected) {
-      return 'text-orange-600'
+      return 'text-orange-400'
     }
     
     switch (botStatus) {
       case 'available':
-        return 'text-green-600'
+        return 'text-emerald-400'
       case 'typing':
-        return 'text-immobrand-gold'
+        return 'text-immobrand-accent'
       case 'away':
-        return 'text-gray-500'
+        return 'text-gray-400'
       default:
-        return 'text-green-600'
+        return 'text-emerald-400'
     }
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
+    <header className="header-gradient px-6 py-4 shadow-2xl">
       <div className="flex items-center justify-between">
         {/* Logo y Branding */}
         <div className="flex items-center space-x-3">
-          <div className="flex items-center justify-center w-10 h-10 bg-immobrand-navy rounded-full">
+          <div className="flex items-center justify-center w-10 h-10 bg-immobrand-blue rounded-full avatar-glow gradient-animated">
             <HouseIcon className="text-white" size={20} />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-immobrand-navy">
+            <h1 className="text-lg font-semibold text-immobrand-cream">
               Inmobiliaria Premium
             </h1>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-300">
               Tu hogar ideal te está esperando
             </p>
           </div>
@@ -64,25 +64,25 @@ export default function Header({ botStatus, isWebhookConnected = true }: HeaderP
         {/* Estado del Bot */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
-            <div className="flex items-center justify-center w-8 h-8 bg-immobrand-gold rounded-full">
-              <BotIcon className="text-immobrand-navy" size={16} />
+            <div className="flex items-center justify-center w-8 h-8 bg-immobrand-accent rounded-full avatar-glow">
+              <BotIcon className="text-white" size={16} />
             </div>
             <div className="text-right">
-              <p className="text-sm font-medium text-immobrand-navy">
+              <p className="text-sm font-medium text-immobrand-cream">
                 {BOT_NAME}
               </p>
               <div className="flex items-center space-x-1">
                 {botStatus === 'available' && isWebhookConnected && (
-                  <CheckIcon className="text-green-600" size={12} />
+                  <CheckIcon className="text-emerald-400" size={12} />
                 )}
                 {!isWebhookConnected && (
-                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                 )}
                 {botStatus === 'typing' && (
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-immobrand-gold rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-immobrand-gold rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-immobrand-gold rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-immobrand-accent rounded-full animate-bounce glow-blue"></div>
+                    <div className="w-2 h-2 bg-immobrand-accent rounded-full animate-bounce glow-blue" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-immobrand-accent rounded-full animate-bounce glow-blue" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                 )}
                 <span className={`text-xs ${getStatusColor()}`}>

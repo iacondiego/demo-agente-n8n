@@ -85,7 +85,7 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' })
         await uploadAudioBlob(audioBlob)
-        
+
         // Detener el stream
         stream.getTracks().forEach(track => track.stop())
       }
@@ -107,11 +107,11 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
 
   const uploadAudioBlob = async (audioBlob: Blob) => {
     setIsUploading(true)
-    
+
     try {
       const fileName = `grabacion_${new Date().getTime()}.wav`
       const file = new File([audioBlob], fileName, { type: 'audio/wav' })
-      
+
       const formData = new FormData()
       formData.append('file', file)
       formData.append('sessionId', sessionId)
@@ -183,13 +183,13 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             }}
             disabled={disabled || isUploading}
           />
-          <p className="text-xs text-gray-400 mt-1 px-1">
+          <p className="text-xs text-gray-400 mt-1 px-1 hidden md:block">
             Presiona Enter para enviar, Shift+Enter para nueva línea
           </p>
         </div>
 
         {/* Botones de acciones */}
-        <div className="flex space-x-2 mb-6">
+        <div className="flex space-x-2 mb-2 md:mb-6">
           {/* Input de archivos oculto */}
           <input
             type="file"
@@ -199,7 +199,7 @@ export default function MessageInput({ onSendMessage, disabled, sessionId }: Mes
             multiple
             className="hidden"
           />
-          
+
           {/* Botón de archivos */}
           <Button
             onClick={() => fileInputRef.current?.click()}

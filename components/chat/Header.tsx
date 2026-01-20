@@ -64,7 +64,7 @@ export default function Header({ botStatus, isWebhookConnected = true, onMenuCli
             <h1 className="text-lg font-semibold text-immobrand-cream">
               Inmobiliaria Premium
             </h1>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-300 hidden md:block">
               Tu hogar ideal te está esperando
             </p>
           </div>

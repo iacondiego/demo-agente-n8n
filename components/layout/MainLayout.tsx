@@ -33,7 +33,7 @@ export default function MainLayout({ initialAgent = 'text' }: MainLayoutProps) {
   }
 
   return (
-    <div className="h-screen flex bg-immobrand-darker relative overflow-hidden">
+    <div className="h-[100dvh] flex bg-immobrand-darker relative overflow-hidden">
       {/* Efectos de fondo decorativos */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-immobrand-blue/5 rounded-full blur-3xl"></div>

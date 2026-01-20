@@ -9,7 +9,11 @@ import Header from './Header'
 import ChatArea from './ChatArea'
 import MessageInput from './MessageInput'
 
-export default function ChatLayout() {
+interface ChatLayoutProps {
+  onMenuClick?: () => void
+}
+
+export default function ChatLayout({ onMenuClick }: ChatLayoutProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [botStatus, setBotStatus] = useState<'available' | 'typing' | 'away'>('available')
   const [isWebhookHealthy, setIsWebhookHealthy] = useState(true)
@@ -161,7 +165,11 @@ export default function ChatLayout() {
 
   return (
     <div className="h-full flex flex-col">
-      <Header botStatus={botStatus} isWebhookConnected={isWebhookHealthy} />
+      <Header
+        botStatus={botStatus}
+        isWebhookConnected={isWebhookHealthy}
+        onMenuClick={onMenuClick}
+      />
       <ChatArea messages={messages} onQuestionClick={(question) => handleSendMessage(question)} />
       <MessageInput
         onSendMessage={handleSendMessage}

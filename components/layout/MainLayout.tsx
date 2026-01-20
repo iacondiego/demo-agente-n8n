@@ -11,19 +11,24 @@ interface MainLayoutProps {
 
 export default function MainLayout({ initialAgent = 'text' }: MainLayoutProps) {
   const [currentAgent, setCurrentAgent] = useState<'text' | 'voice'>(initialAgent)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleAgentChange = (agent: 'text' | 'voice') => {
     setCurrentAgent(agent)
   }
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   const renderAgentInterface = () => {
     switch (currentAgent) {
       case 'text':
-        return <ChatLayout />
+        return <ChatLayout onMenuClick={toggleMobileMenu} />
       case 'voice':
-        return <VoiceAgent />
+        return <VoiceAgent onMenuClick={toggleMobileMenu} />
       default:
-        return <ChatLayout />
+        return <ChatLayout onMenuClick={toggleMobileMenu} />
     }
   }
 
@@ -36,16 +41,19 @@ export default function MainLayout({ initialAgent = 'text' }: MainLayoutProps) {
         <div className="absolute top-3/4 left-1/2 w-48 h-48 bg-immobrand-lightblue/4 rounded-full blur-2xl"></div>
       </div>
 
-      {/* Sidebar */}
+      {/* Sidebar - Ahora con soporte móvil */}
       <Sidebar
         currentAgent={currentAgent}
         onAgentChange={handleAgentChange}
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
 
       {/* Contenido principal */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full">
         {renderAgentInterface()}
       </div>
     </div>
   )
 }
+

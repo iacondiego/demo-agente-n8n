@@ -1,19 +1,20 @@
 'use client'
 
-import { HouseIcon, BotIcon, CheckIcon } from '../icons/PropertyIcons'
+import { HouseIcon, BotIcon, CheckIcon, MenuIcon } from '../icons/PropertyIcons'
 import { BOT_NAME } from '@/lib/constants'
 
 interface HeaderProps {
   botStatus: 'available' | 'typing' | 'away'
   isWebhookConnected?: boolean
+  onMenuClick?: () => void
 }
 
-export default function Header({ botStatus, isWebhookConnected = true }: HeaderProps) {
+export default function Header({ botStatus, isWebhookConnected = true, onMenuClick }: HeaderProps) {
   const getStatusText = () => {
     if (botStatus === 'away' && !isWebhookConnected) {
       return 'Modo sin conexión'
     }
-    
+
     switch (botStatus) {
       case 'available':
         return 'Disponible'
@@ -30,7 +31,7 @@ export default function Header({ botStatus, isWebhookConnected = true }: HeaderP
     if (botStatus === 'away' && !isWebhookConnected) {
       return 'text-orange-400'
     }
-    
+
     switch (botStatus) {
       case 'available':
         return 'text-emerald-400'
@@ -48,6 +49,14 @@ export default function Header({ botStatus, isWebhookConnected = true }: HeaderP
       <div className="flex items-center justify-between">
         {/* Logo y Branding */}
         <div className="flex items-center space-x-3">
+          {/* Botón Menu Móvil */}
+          <button
+            onClick={onMenuClick}
+            className="md:hidden p-2 -ml-2 text-gray-300 hover:text-white transition-colors"
+          >
+            <MenuIcon size={24} />
+          </button>
+
           <div className="flex items-center justify-center w-10 h-10 bg-immobrand-blue rounded-full avatar-glow gradient-animated">
             <HouseIcon className="text-white" size={20} />
           </div>

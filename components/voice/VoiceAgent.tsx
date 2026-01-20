@@ -1,23 +1,27 @@
 'use client'
 
 import { useEffect } from 'react'
-import { VoiceAgentIcon } from '../icons/PropertyIcons'
+import { VoiceAgentIcon, MenuIcon } from '../icons/PropertyIcons'
 
-export default function VoiceAgent() {
+interface VoiceAgentProps {
+  onMenuClick?: () => void
+}
+
+export default function VoiceAgent({ onMenuClick }: VoiceAgentProps) {
   useEffect(() => {
     // Cargar el script de ElevenLabs si no está ya cargado
     const existingScript = document.getElementById('elevenlabs-script')
-    
+
     if (!existingScript) {
       const script = document.createElement('script')
       script.id = 'elevenlabs-script'
       script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed'
       script.async = true
       script.type = 'text/javascript'
-      
+
       // Agregar el script al head
       document.head.appendChild(script)
-      
+
       // Cleanup al desmontar el componente
       return () => {
         const scriptElement = document.getElementById('elevenlabs-script')
@@ -34,6 +38,14 @@ export default function VoiceAgent() {
       <div className="header-gradient px-6 py-4 shadow-2xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
+            {/* Botón Menu Móvil */}
+            <button
+              onClick={onMenuClick}
+              className="md:hidden p-2 -ml-2 text-gray-300 hover:text-white transition-colors"
+            >
+              <MenuIcon size={24} />
+            </button>
+
             <div className="flex items-center justify-center w-10 h-10 bg-immobrand-accent rounded-full avatar-glow">
               <VoiceAgentIcon className="text-white" size={20} />
             </div>
@@ -59,7 +71,7 @@ export default function VoiceAgent() {
         <div className="text-center max-w-2xl">
           {/* Widget de ElevenLabs centrado */}
           <div className="mb-8">
-            <elevenlabs-convai 
+            <elevenlabs-convai
               agent-id="agent_01jxtbwt58fcwa0w8bs1s8agcm"
             ></elevenlabs-convai>
           </div>
@@ -83,3 +95,4 @@ export default function VoiceAgent() {
     </div>
   )
 }
+

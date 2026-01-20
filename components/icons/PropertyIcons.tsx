@@ -1,17 +1,19 @@
-import { 
-  Home, 
-  Building, 
-  Building2, 
-  MapPin, 
-  MessageCircle, 
-  Send, 
-  User, 
+import {
+  Home,
+  Building,
+  Building2,
+  MapPin,
+  MessageCircle,
+  Send,
+  User,
   Bot,
   Clock,
   CheckCircle2,
   Mic,
   MessageSquare,
-  Zap
+  Zap,
+  Menu,
+  X
 } from 'lucide-react'
 
 interface IconProps {
@@ -69,4 +71,12 @@ export const VoiceAgentIcon = ({ className, size = 20 }: IconProps) => (
 
 export const AIIcon = ({ className, size = 20 }: IconProps) => (
   <Zap className={className} size={size} />
+)
+
+export const MenuIcon = ({ className, size = 20 }: IconProps) => (
+  <Menu className={className} size={size} />
+)
+
+export const CloseIcon = ({ className, size = 20 }: IconProps) => (
+  <X className={className} size={size} />
 ) 

@@ -5,7 +5,7 @@ import { TextAgentIcon, VoiceAgentIcon, AIIcon } from '../icons/PropertyIcons'
 
 export default function LandingPage() {
     return (
-        <div className="min-h-screen bg-immobrand-darker relative overflow-hidden flex flex-col items-center justify-center font-sans text-immobrand-cream selection:bg-immobrand-accent/30">
+        <div className="min-h-screen bg-immobrand-darker relative overflow-x-hidden flex flex-col items-center justify-center font-sans text-immobrand-cream selection:bg-immobrand-accent/30">
 
             {/* Background Effects */}
             <div className="absolute inset-0 pointer-events-none">

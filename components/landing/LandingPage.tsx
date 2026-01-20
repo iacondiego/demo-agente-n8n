@@ -16,7 +16,7 @@ export default function LandingPage() {
             {/* Header */}
             <header className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center z-10 animate-fade-in">
                 <div className="flex items-center space-x-4">
-                    <div className="relative w-64 h-24"> {/* Container for logo */}
+                    <div className="relative w-48 h-16 md:w-64 md:h-24"> {/* Container for logo */}
                         <img
                             src="/logo.png"
                             alt="Setterless Logo"
@@ -27,7 +27,7 @@ export default function LandingPage() {
             </header>
 
             {/* Main Content */}
-            <main className="z-10 container mx-auto px-4 text-center">
+            <main className="z-10 container mx-auto px-4 text-center pt-32 md:pt-0">
 
                 <div className="mb-16 animate-fade-in">
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-immobrand-lightblue to-immobrand-accent bg-clip-text text-transparent">

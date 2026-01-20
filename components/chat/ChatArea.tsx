@@ -43,9 +43,9 @@ export default function ChatArea({ messages, onQuestionClick }: ChatAreaProps) {
 
               <div className="flex flex-col gap-3">
                 {[
-                  '¿Qué pisos en alquiler hay disponibles en Ciudad de México?',
-                  'Busco un piso que admita mascotas y tenga parking',
-                  '¿Qué propiedades están disponibles por menos de 250.000 dolares?'
+                  'Busco un piso de 3 ambientes tengo presupuesto de 200.000 dolares',
+                  'Busco local para alquiler en Ciudad de México de 45 m2',
+                  'Busco un piso que acepte mascotas, tenga parking'
                 ].map((question, i) => (
                   <button
                     key={i}

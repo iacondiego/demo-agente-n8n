@@ -29,18 +29,13 @@ export default function Sidebar({ currentAgent, onAgentChange }: SidebarProps) {
     <div className="w-80 glass-effect border-r border-immobrand-navy h-full flex flex-col shadow-2xl">
       {/* Header del Sidebar */}
       <div className="p-6 border-b border-immobrand-navy/30">
-        <div className="flex items-center space-x-3 mb-2">
-          <div className="w-8 h-8 bg-immobrand-blue rounded-lg flex items-center justify-center glow-blue">
-            <AIIcon className="text-white" size={16} />
-          </div>
-          <div>
-            <h2 className="text-immobrand-cream font-semibold text-lg">
-              Setterless 360°
-            </h2>
-            <p className="text-gray-400 text-xs">
-              Selecciona tu agente preferido
-            </p>
-          </div>
+        <div className="mb-2">
+          <h2 className="text-immobrand-cream font-semibold text-lg">
+            Setterless 360°
+          </h2>
+          <p className="text-gray-400 text-xs">
+            Selecciona tu agente preferido
+          </p>
         </div>
       </div>
 
@@ -51,31 +46,28 @@ export default function Sidebar({ currentAgent, onAgentChange }: SidebarProps) {
             key={agent.id}
             onClick={() => agent.available && onAgentChange(agent.id)}
             disabled={!agent.available}
-            className={`w-full p-4 rounded-lg transition-all duration-300 text-left ${
-              currentAgent === agent.id
+            className={`w-full p-4 rounded-lg transition-all duration-300 text-left ${currentAgent === agent.id
                 ? 'bg-immobrand-blue/20 border border-immobrand-accent glow-blue'
                 : agent.available
-                ? 'hover:bg-immobrand-dark/50 border border-immobrand-navy hover:border-immobrand-accent/50'
-                : 'opacity-50 cursor-not-allowed border border-immobrand-navy/30'
-            }`}
+                  ? 'hover:bg-immobrand-dark/50 border border-immobrand-navy hover:border-immobrand-accent/50'
+                  : 'opacity-50 cursor-not-allowed border border-immobrand-navy/30'
+              }`}
           >
             <div className="flex items-start space-x-3">
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                currentAgent === agent.id 
-                  ? 'bg-immobrand-accent/20 glow-blue animate-pulse' 
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${currentAgent === agent.id
+                  ? 'bg-immobrand-accent/20 glow-blue animate-pulse'
                   : 'bg-immobrand-navy/30'
-              }`}>
-                <agent.icon 
-                  className={currentAgent === agent.id ? 'text-immobrand-accent' : 'text-gray-400'} 
-                  size={20} 
+                }`}>
+                <agent.icon
+                  className={currentAgent === agent.id ? 'text-immobrand-accent' : 'text-gray-400'}
+                  size={20}
                 />
               </div>
               <div className="flex-1">
-                <h3 className={`font-medium ${
-                  currentAgent === agent.id 
-                    ? 'text-immobrand-accent' 
+                <h3 className={`font-medium ${currentAgent === agent.id
+                    ? 'text-immobrand-accent'
                     : 'text-immobrand-cream'
-                }`}>
+                  }`}>
                   {agent.name}
                 </h3>
                 <p className="text-gray-400 text-sm mt-1">

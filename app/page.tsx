@@ -1,9 +1,5 @@
-import MainLayout from '@/components/layout/MainLayout'
+import LandingPage from '@/components/landing/LandingPage'
 
 export default function Home() {
-  return (
-    <main className="w-full h-screen overflow-hidden">
-      <MainLayout />
-    </main>
-  )
-} 
+  return <LandingPage />
+}

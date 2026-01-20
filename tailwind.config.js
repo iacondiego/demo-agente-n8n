@@ -22,8 +22,8 @@ module.exports = {
           blue: '#1e40af',      // Azul principal brillante
           lightblue: '#3b82f6', // Azul más claro para acentos
           accent: '#60a5fa',    // Azul claro para elementos interactivos
-          dark: '#1e293b',      // Fondo oscuro (slate-800)
-          darker: '#0f172a',    // Fondo más oscuro (slate-900)
+          dark: '#0f172a',      // Fondo oscuro secundario (slate-900)
+          darker: '#000000',    // Fondo principal negro puro
           cream: '#f8fafc',     // Blanco suave para texto
         }
       },

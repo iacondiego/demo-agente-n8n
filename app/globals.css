@@ -8,159 +8,184 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
-  
+
   body {
     @apply bg-immobrand-darker text-immobrand-cream;
-    overflow: hidden; /* Para evitar scroll en la aplicación full-screen */
-    background: radial-gradient(ellipse at top, rgba(30, 64, 175, 0.15) 0%, #0f172a 70%);
+    overflow: hidden;
+    /* Para evitar scroll en la aplicación full-screen */
+    background: radial-gradient(ellipse at top, rgba(30, 64, 175, 0.15) 0%, #000000 70%);
   }
-  
+
   /* Scrollbar personalizado para el área de chat */
   .chat-scroll::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   .chat-scroll::-webkit-scrollbar-track {
     @apply bg-immobrand-dark rounded-full;
   }
-  
+
   .chat-scroll::-webkit-scrollbar-thumb {
     @apply bg-immobrand-blue rounded-full;
   }
-  
+
   .chat-scroll::-webkit-scrollbar-thumb:hover {
     @apply bg-immobrand-lightblue;
   }
 }
 
 @layer components {
+
   /* Componente de botón premium */
   .btn-primary {
     @apply bg-immobrand-blue hover:bg-immobrand-lightblue text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-2xl;
     box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4), 0 0 20px rgba(96, 165, 250, 0.15);
   }
-  
+
   .btn-primary:hover {
     box-shadow: 0 8px 25px rgba(30, 64, 175, 0.6), 0 0 30px rgba(96, 165, 250, 0.3);
     transform: translateY(-2px);
   }
-  
+
   .btn-secondary {
     @apply bg-immobrand-accent hover:bg-immobrand-lightblue text-white font-medium px-4 py-2 rounded-lg transition-all duration-300;
     box-shadow: 0 4px 15px rgba(96, 165, 250, 0.4);
   }
-  
+
   .btn-secondary:hover {
     box-shadow: 0 8px 25px rgba(96, 165, 250, 0.6);
     transform: translateY(-1px);
   }
-  
+
   /* Efectos de foco personalizados */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-immobrand-accent focus:ring-offset-2;
   }
-  
+
   /* Efectos de glassmorphism */
   .glass-effect {
     backdrop-filter: blur(16px);
     background: rgba(30, 41, 59, 0.8);
     border: 1px solid rgba(96, 165, 250, 0.2);
   }
-  
+
   /* Efectos de resplandor */
   .glow-blue {
     box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
   }
-  
+
   .glow-blue-strong {
     box-shadow: 0 0 30px rgba(96, 165, 250, 0.5), 0 0 60px rgba(30, 64, 175, 0.3);
   }
-  
+
   /* Header con gradiente */
   .header-gradient {
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(96, 165, 250, 0.2);
   }
-  
+
   /* Animación de escritura del bot */
   .typing-indicator {
     animation: pulse 1.5s ease-in-out infinite;
   }
-  
+
   .typing-dots::after {
     content: '';
     animation: ellipsis 1.5s infinite;
   }
-  
+
   /* Efectos de mensaje */
   .message-glow {
     box-shadow: 0 4px 20px rgba(96, 165, 250, 0.15);
     transition: all 0.3s ease;
   }
-  
+
   .message-glow:hover {
     box-shadow: 0 8px 30px rgba(96, 165, 250, 0.25);
     transform: translateY(-1px);
   }
-  
+
   /* Efectos de entrada con resplandor */
   .slide-up-glow {
     animation: slideUpGlow 0.5s ease-out;
   }
-  
+
   /* Avatar con resplandor */
   .avatar-glow {
     box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
     transition: all 0.3s ease;
   }
-  
+
   .avatar-glow:hover {
     box-shadow: 0 0 25px rgba(96, 165, 250, 0.6);
     transform: scale(1.05);
   }
-  
+
   /* Input con efectos */
   .input-glow {
     box-shadow: 0 4px 15px rgba(30, 64, 175, 0.2);
     transition: all 0.3s ease;
   }
-  
+
   .input-glow:focus {
     box-shadow: 0 8px 25px rgba(96, 165, 250, 0.4), 0 0 20px rgba(96, 165, 250, 0.2);
     transform: translateY(-1px);
   }
-  
+
   /* Gradiente animado para elementos especiales */
   .gradient-animated {
     background: linear-gradient(45deg, #1e40af, #3b82f6, #60a5fa, #1e40af);
     background-size: 300% 300%;
     animation: gradientShift 3s ease infinite;
   }
-  
+
   @keyframes ellipsis {
-    0%, 20% { content: ''; }
-    40% { content: '.'; }
-    60% { content: '..'; }
-    80%, 100% { content: '...'; }
+
+    0%,
+    20% {
+      content: '';
+    }
+
+    40% {
+      content: '.';
+    }
+
+    60% {
+      content: '..';
+    }
+
+    80%,
+    100% {
+      content: '...';
+    }
   }
-  
+
   @keyframes slideUpGlow {
-    0% { 
-      transform: translateY(20px); 
+    0% {
+      transform: translateY(20px);
       opacity: 0;
       box-shadow: 0 0 0 rgba(96, 165, 250, 0);
     }
-    100% { 
-      transform: translateY(0); 
+
+    100% {
+      transform: translateY(0);
       opacity: 1;
       box-shadow: 0 4px 20px rgba(96, 165, 250, 0.15);
     }
   }
-  
+
   @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
   }
-} 
+}

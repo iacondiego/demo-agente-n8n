@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   keywords: 'inmobiliaria, propiedades, casas, departamentos, venta, alquiler, asesor virtual',
   authors: [{ name: 'Inmobiliaria Premium' }],
   viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#1a365d',
+  themeColor: '#000000',
 }
 
 export default function RootLayout({

@@ -7,9 +7,10 @@ import { scrollToBottom } from '@/lib/utils'
 
 interface ChatAreaProps {
   messages: Message[]
+  onQuestionClick?: (question: string) => void
 }
 
-export default function ChatArea({ messages }: ChatAreaProps) {
+export default function ChatArea({ messages, onQuestionClick }: ChatAreaProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
@@ -18,7 +19,7 @@ export default function ChatArea({ messages }: ChatAreaProps) {
   }, [messages])
 
   return (
-    <div 
+    <div
       ref={chatContainerRef}
       className="flex-1 overflow-y-auto chat-scroll bg-immobrand-darker px-6 py-6"
       style={{
@@ -36,26 +37,24 @@ export default function ChatArea({ messages }: ChatAreaProps) {
                 ¡Bienvenido/a a tu Asesor Virtual!
               </h3>
               <p className="text-gray-300 mb-6">
-                Estoy aquí para ayudarte a encontrar la propiedad perfecta. 
+                Estoy aquí para ayudarte a encontrar la propiedad perfecta.
                 Puedes preguntarme sobre casas, departamentos, precios, ubicaciones y más.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                <div className="glass-effect p-3 rounded-lg message-glow hover:glow-blue transition-all duration-300">
-                  <span className="text-immobrand-accent font-medium">💼 Departamentos</span>
-                  <p className="text-gray-300 mt-1">En venta y alquiler</p>
-                </div>
-                <div className="glass-effect p-3 rounded-lg message-glow hover:glow-blue transition-all duration-300">
-                  <span className="text-immobrand-accent font-medium">🏡 Casas</span>
-                  <p className="text-gray-300 mt-1">Todas las zonas</p>
-                </div>
-                <div className="glass-effect p-3 rounded-lg message-glow hover:glow-blue transition-all duration-300">
-                  <span className="text-immobrand-accent font-medium">📍 Ubicaciones</span>
-                  <p className="text-gray-300 mt-1">Busca por zona</p>
-                </div>
-                <div className="glass-effect p-3 rounded-lg message-glow hover:glow-blue transition-all duration-300">
-                  <span className="text-immobrand-accent font-medium">📅 Visitas</span>
-                  <p className="text-gray-300 mt-1">Agenda fácilmente</p>
-                </div>
+
+              <div className="flex flex-col gap-3">
+                {[
+                  '¿Qué pisos en alquiler hay disponibles en Ciudad de México?',
+                  'Busco un piso que admita mascotas y tenga parking',
+                  '¿Qué propiedades están disponibles por menos de 250.000 dolares?'
+                ].map((question, i) => (
+                  <button
+                    key={i}
+                    onClick={() => onQuestionClick?.(question)}
+                    className="glass-effect p-3 rounded-lg message-glow hover:glow-blue transition-all duration-300 text-left group"
+                  >
+                    <span className="text-immobrand-accent font-medium group-hover:text-immobrand-lightblue transition-colors">" {question} "</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>

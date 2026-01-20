@@ -21,7 +21,7 @@ export default function ChatLayout() {
       setIsWebhookHealthy(isHealthy)
       // No cambiar el botStatus a 'away' al inicio para evitar mostrar "Modo sin conexión"
     }
-    
+
     checkWebhookHealth()
 
     // Cleanup: cancelar operaciones pendientes al desmontar
@@ -40,19 +40,19 @@ export default function ChatLayout() {
 
   const generateFallbackResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase()
-    
+
     if (lowerMessage.includes('departamento') || lowerMessage.includes('depto')) {
       return BOT_RESPONSES.departamentos[Math.floor(Math.random() * BOT_RESPONSES.departamentos.length)]
     }
-    
+
     if (lowerMessage.includes('casa') || lowerMessage.includes('vivienda')) {
       return BOT_RESPONSES.casas[Math.floor(Math.random() * BOT_RESPONSES.casas.length)]
     }
-    
+
     if (lowerMessage.includes('alquiler') || lowerMessage.includes('alquilar') || lowerMessage.includes('rent')) {
       return BOT_RESPONSES.alquiler[Math.floor(Math.random() * BOT_RESPONSES.alquiler.length)]
     }
-    
+
     return BOT_RESPONSES.default[Math.floor(Math.random() * BOT_RESPONSES.default.length)]
   }
 
@@ -65,12 +65,12 @@ export default function ChatLayout() {
       timestamp: new Date(),
       files: files
     }
-    
+
     addMessage(userMessage)
 
     // Simular que el bot está escribiendo
     setBotStatus('typing')
-    
+
     // Crear mensaje temporal de "escribiendo"
     const typingMessage: Message = {
       id: generateMessageId(),
@@ -79,7 +79,7 @@ export default function ChatLayout() {
       timestamp: new Date(),
       isTyping: true
     }
-    
+
     addMessage(typingMessage)
 
     try {
@@ -87,9 +87,9 @@ export default function ChatLayout() {
 
       // Intentar enviar al webhook de n8n y esperar respuesta via polling
       console.log(`[CHAT] Enviando mensaje a n8n para session: ${webhookService.getSessionId()}`)
-      
+
       const webhookResponse = await webhookService.sendMessage(content, files)
-      
+
       if (webhookResponse.success && webhookResponse.response) {
         const botMessage: Message = {
           id: generateMessageId(),
@@ -100,7 +100,7 @@ export default function ChatLayout() {
 
         removeTypingMessage()
         addMessage(botMessage)
-        
+
         // Marcar webhook como saludable si la respuesta fue exitosa
         if (!isWebhookHealthy) {
           setIsWebhookHealthy(true)
@@ -114,10 +114,10 @@ export default function ChatLayout() {
 
     } catch (error) {
       console.error('[CHAT] Error con webhook:', error)
-      
+
       // Marcar webhook como no saludable
       setIsWebhookHealthy(false)
-      
+
       // Usar respuesta de fallback
       const fallbackResponse = generateFallbackResponse(content)
       const errorMessage: Message = {
@@ -138,7 +138,7 @@ export default function ChatLayout() {
           sender: 'bot',
           timestamp: new Date()
         }
-        
+
         await delay(1000)
         addMessage(errorNote)
       }
@@ -148,22 +148,23 @@ export default function ChatLayout() {
   }, [addMessage, removeTypingMessage, isWebhookHealthy])
 
   // Mensaje de bienvenida inicial
-  useEffect(() => {
-    const welcomeMessage: Message = {
-      id: generateMessageId(),
-      content: WELCOME_MESSAGES[Math.floor(Math.random() * WELCOME_MESSAGES.length)],
-      sender: 'bot',
-      timestamp: new Date()
-    }
-    setMessages([welcomeMessage])
-  }, [])
+  // Mensaje de bienvenida inicial desactivado para mostrar las preguntas de ejemplo
+  // useEffect(() => {
+  //   const welcomeMessage: Message = {
+  //     id: generateMessageId(),
+  //     content: WELCOME_MESSAGES[Math.floor(Math.random() * WELCOME_MESSAGES.length)],
+  //     sender: 'bot',
+  //     timestamp: new Date()
+  //   }
+  //   setMessages([welcomeMessage])
+  // }, [])
 
   return (
     <div className="h-full flex flex-col">
       <Header botStatus={botStatus} isWebhookConnected={isWebhookHealthy} />
-      <ChatArea messages={messages} />
-      <MessageInput 
-        onSendMessage={handleSendMessage} 
+      <ChatArea messages={messages} onQuestionClick={(question) => handleSendMessage(question)} />
+      <MessageInput
+        onSendMessage={handleSendMessage}
         disabled={botStatus === 'typing'}
         sessionId={webhookService.getSessionId()}
       />

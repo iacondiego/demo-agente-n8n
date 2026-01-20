@@ -11,8 +11,6 @@
 
   body {
     @apply bg-immobrand-darker text-immobrand-cream;
-    overflow: hidden;
-    /* Para evitar scroll en la aplicación full-screen */
     background: radial-gradient(ellipse at top, rgba(30, 64, 175, 0.15) 0%, #000000 70%);
   }
 

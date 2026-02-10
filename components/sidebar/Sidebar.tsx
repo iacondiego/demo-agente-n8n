@@ -58,7 +58,7 @@ export default function Sidebar({ currentAgent, onAgentChange, isOpen = false, o
 
         {/* Lista de Agentes */}
         <div className="flex-1 p-4 space-y-3">
-          {agents.map((agent) => (
+          {agents.filter(agent => currentAgent === 'text' || agent.id === 'voice').map((agent) => (
             <button
               key={agent.id}
               onClick={() => {

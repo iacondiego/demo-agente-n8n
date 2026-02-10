@@ -47,8 +47,10 @@ export default function LandingPage() {
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
                     {/* Text Agent Card */}
-                    <Link
-                        href="/demo?agent=text"
+                    <a
+                        href="https://wa.me/56968744588"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="group relative bg-white/5 backdrop-blur-md border border-white/10 hover:border-immobrand-lightblue/50 rounded-3xl p-8 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-immobrand-blue/10 overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-immobrand-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -67,7 +69,7 @@ export default function LandingPage() {
                                 Probar Chat →
                             </div>
                         </div>
-                    </Link>
+                    </a>
 
                     {/* Voice Agent Card */}
                     <Link
